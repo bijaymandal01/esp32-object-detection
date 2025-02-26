@@ -5,3 +5,4 @@ cvlib
 numpy
 pillow
 flask-cors
+tensorflow
