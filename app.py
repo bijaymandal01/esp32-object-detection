@@ -14,11 +14,12 @@ app = Flask(__name__)
 def detect_object():
     if "image" not in request.files:
         return jsonify({"error": "No image uploaded"}), 400
-    
+
     file = request.files["image"]
     image = Image.open(file.stream)
     image = np.array(image)
 
+    # Perform object detection
     bbox, label, conf = cv.detect_common_objects(image)
     detected_image = draw_bbox(image, bbox, label, conf)
 
@@ -28,7 +29,6 @@ def detect_object():
 
     return jsonify({"labels": label, "image": img_base64})
 
-# Ensure the app runs on Render's assigned port
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5000))  # Use Render-provided port
     app.run(host="0.0.0.0", port=port)
